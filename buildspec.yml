@@ -9,7 +9,7 @@ phases:
       golang: 1.14
     commands:
       - wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.31.0
-      - mv ./bin/golangci-lint ${CCODEBUILD_SRC_DIR}
+      - mv ./bin/golangci-lint ${CODEBUILD_SRC_DIR}
       - golangci-lint --version
   build:
     commands:
