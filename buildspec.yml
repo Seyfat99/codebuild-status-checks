@@ -1,0 +1,15 @@
+version: 0.2
+env:
+  variables:
+    GOPRIVATE: github.com/redventures
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.14
+    commands:
+      - wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.31.0
+      - golangci-lint --version
+  build:
+    commands:
+      - make lint
