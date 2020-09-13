@@ -1,4 +1,4 @@
-import { Source, EventAction, FilterGroup, Project, BuildSpec } from '@aws-cdk/aws-codebuild';
+import { Source, EventAction, FilterGroup, Project, BuildSpec, L, LinuxBuildImage } from '@aws-cdk/aws-codebuild';
 import { Construct, Stack, StackProps } from "@aws-cdk/core";
 
 interface GitHubStatusChecksProps extends StackProps {
@@ -28,6 +28,10 @@ export class GitHubStatusChecks extends Stack {
             projectName: props.projectName,
             badge: true,
             buildSpec: BuildSpec.fromSourceFilename(props.buildSpecFilename),
+            environment: {
+                buildImage: LinuxBuildImage.STANDARD_4_0,
+                privileged: true
+            }
         });
     }
 }
