@@ -29,7 +29,7 @@ export class GitHubStatusChecks extends Stack {
             },
             commands: [
                 "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.31.0",
-                "./bin/golangci-lint --version"
+                "golangci-lint --version"
             ],
         }
 
@@ -41,7 +41,6 @@ export class GitHubStatusChecks extends Stack {
         new Project(this, 'GithubStatusChecksTest', {
             source: gitHubSource,
             projectName: `${props.projectName}-test`,
-            badge: true,
             buildSpec: BuildSpec.fromObject({
                 version: '0.2',
                 phases: {
@@ -60,7 +59,6 @@ export class GitHubStatusChecks extends Stack {
         new Project(this, 'GithubStatusChecksLint', {
             source: gitHubSource,
             projectName: `${props.projectName}-lint`,
-            badge: true,
             buildSpec: BuildSpec.fromObject({
                 version: '0.2',
                 phases: {
