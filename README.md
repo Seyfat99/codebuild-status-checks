@@ -1,1 +1,2 @@
 # codebuild-status-checks
+test

@@ -1,0 +1,17 @@
+version: 0.2
+env:
+  variables:
+    GOPRIVATE: github.com/redventures
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.14
+      docker: 18
+    commands:
+      - docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.31.0 golangci-lint run -v
+      - echo hey
+      - golangci-lint --version
+  build:
+    commands:
+      - make lint

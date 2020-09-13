@@ -1,38 +1,38 @@
-import * as codebuild from '@aws-cdk/aws-codebuild';
+import { Source, EventAction, FilterGroup, Project, BuildSpec, ComputeType, LinuxBuildImage } from '@aws-cdk/aws-codebuild';
+import { Construct, Stack, StackProps } from "@aws-cdk/core";
 
-import { Construct, SecretValue, Stack, StackProps, Fn } from "@aws-cdk/core";
-
+interface GitHubStatusChecksProps extends StackProps {
+    repoOwner: string;
+    repoName: string;
+    projectName: string;
+    buildSpecFilename: string;
+}
 
 export class GitHubStatusChecks extends Stack {
-    constructor(scope: Construct, id: string, props?: StackProps) {
+    constructor(scope: Construct, id: string, props: GitHubStatusChecksProps) {
         super(scope, id, props);
 
-        const gitHubSource = codebuild.Source.gitHub({
-            owner: 'Seyfat99',
-            repo: 'codebuild-status-checks',
+        const gitHubSource = Source.gitHub({
+            owner: props.repoOwner,
+            repo: props.repoName,
             reportBuildStatus: true,
-            webhook: true, // optional, default: true if `webhookFilters` were provided, false otherwise
+            webhook: true,
             webhookFilters: [
-                codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_CREATED),
-                codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_UPDATED)
+                FilterGroup.inEventOf(EventAction.PULL_REQUEST_CREATED),
+                FilterGroup.inEventOf(EventAction.PULL_REQUEST_UPDATED)
             ],
         });
 
-        const project = new codebuild.Project(this, 'GithubStatusChecks', {
+        const project = new Project(this, 'GithubStatusChecks', {
             source: gitHubSource,
-            projectName: "status-checker",
-            buildSpec: codebuild.BuildSpec.fromObject({
-                version: '0.2',
-                phases: {
-                    build: {
-                        commands: [
-                            'make lint',
-                        ],
-                    },
-                },
-            }),
+            projectName: props.projectName,
             badge: true,
-            
+            buildSpec: BuildSpec.fromSourceFilename(props.buildSpecFilename),
+            environment: {
+                buildImage: LinuxBuildImage.AMAZON_LINUX_2_3,
+                computeType: ComputeType.SMALL,
+                privileged: true,
+            }
         });
     }
 }
