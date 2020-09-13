@@ -8,8 +8,8 @@ phases:
     runtime-versions:
       golang: 1.14
     commands:
-      - wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.31.0
-      - mv ./bin/golangci-lint ${CODEBUILD_SRC_DIR}
+      - docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.31.0 golangci-lint run -v
+      - echo hey
       - golangci-lint --version
   build:
     commands:
