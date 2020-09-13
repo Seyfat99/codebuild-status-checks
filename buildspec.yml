@@ -7,10 +7,9 @@ phases:
   install:
     runtime-versions:
       golang: 1.14
-      docker: 18
     commands:
       - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.31.0
-      - golangci-lint --version
+      - ./bin/golangci-lint --version
   build:
     commands:
       - make test
