@@ -12,4 +12,4 @@ phases:
       - ./bin/golangci-lint --version
   build:
     commands:
-      - make test
+      - cd go && make test
