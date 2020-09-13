@@ -68,7 +68,7 @@ export class GitHubStatusChecks extends Stack {
                     build: {
                         commands: [
                             "cd go",
-                            "${CODEBUILD_SRC_DIR}/bin/golangci-lint run --timeout=3m ./cmd/... ./internal/..."
+                            "~/bin/golangci-lint run --timeout=3m ./cmd/... ./internal/..."
                         ],
                     },
                 },
